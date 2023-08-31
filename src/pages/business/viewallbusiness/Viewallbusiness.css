@@ -1,0 +1,25 @@
+.actionBtn, .actiondomainBtn{
+    display: flex;
+    gap:0.3rem;
+    justify-content: center;
+    align-items: center;
+    
+  }
+  .actionBtn button{
+       padding: 2px 4px;
+       font-size: 5px;
+       font-weight: 600;
+   
+  }
+  .actiondomainBtn button{
+   padding: 2px 4px;
+   font-size: 12px;
+   font-weight: 600;
+  
+   
+  }
+ 
+  .actionicon{
+     font-size: 15px !important;
+  }
+ 

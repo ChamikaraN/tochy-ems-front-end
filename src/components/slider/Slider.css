@@ -1,0 +1,22 @@
+.slick-prev:before {
+ 
+  color: #4D53E0;
+  font-size: 25px;
+  border-radius: 50%;
+ 
+}
+
+.slick-next:before {
+ 
+  color: #4D53E0;
+  font-size: 25px;
+ 
+}
+.slick-dots{
+  font-size: 20px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+.card-width{
+  height:250px;
+}

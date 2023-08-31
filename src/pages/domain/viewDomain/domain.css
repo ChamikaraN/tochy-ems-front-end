@@ -1,0 +1,17 @@
+.actiondomainBtn{
+    display: flex;
+    gap:0.3rem;
+    justify-content: center;
+    align-items: center;
+    
+  }
+ 
+  .actiondomainBtn button{
+   padding: 2px 4px;
+   font-size: 12px;
+   font-weight: 600;
+  
+   
+  }
+ 
+ 
