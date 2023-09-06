@@ -4,12 +4,13 @@ import { fetchMyProfile } from "../../../actions/auth";
 import { Link } from "react-router-dom";
 
 import "./Viewprofile.css";
+import { useTheme } from "@material-ui/core";
 
 function Viewprofile({ profileData, dispatch }) {
   useEffect(() => {
     dispatch(fetchMyProfile());
   }, [dispatch]);
-
+  const theme = useTheme();
   return (
     <div>
       <div className="container">
@@ -17,10 +18,13 @@ function Viewprofile({ profileData, dispatch }) {
           {/* /Breadcrumb */}
           <div className="row gutters-sm">
             <div className="col-md-4 mb-3">
-              <div className="card" style={{ backgroundColor: "#101010" }}>
+              <div
+                className="card mb-3 pt-2"
+                style={{ backgroundColor: theme.palette.background.default }}
+              >
                 <div
                   className="card-body"
-                  style={{ backgroundColor: "#101010" }}
+                  style={{ backgroundColor: theme.palette.background.default }}
                 >
                   <div className="d-flex flex-column align-items-center text-center">
                     <img
@@ -45,7 +49,7 @@ function Viewprofile({ profileData, dispatch }) {
             <div className="col-md-8">
               <div
                 className="card mb-3 pt-2"
-                style={{ backgroundColor: "#101010" }}
+                style={{ backgroundColor: theme.palette.background.default }}
               >
                 <div className="card-body">
                   <div className="row">
@@ -85,8 +89,6 @@ function Viewprofile({ profileData, dispatch }) {
                       {profileData.phone ? profileData.phone : "Not added yet"}
                     </div>
                   </div>
-                  <hr />
-
                   <hr />
                   <div className="row">
                     <div className="col-sm-3">

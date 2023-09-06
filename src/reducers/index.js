@@ -8,6 +8,7 @@ import domain from "./domain.js";
 import myprofile from "./myprofile.js";
 import business from "./business.js";
 import sentemail from "./sentemail.js";
+import theme from "./theme.js";
 
 export default combineReducers({
   register,
@@ -18,5 +19,6 @@ export default combineReducers({
   domain,
   myprofile,
   business,
-  sentemail
+  sentemail,
+  theme,
 });

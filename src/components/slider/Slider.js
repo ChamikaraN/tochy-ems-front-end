@@ -6,6 +6,7 @@ import "slick-carousel/slick/slick-theme.css";
 import "./Slider.css";
 
 import SliderJs from "react-slick";
+import { useTheme } from "@material-ui/core";
 
 export default function Slider({ templates }) {
   var settings = {
@@ -43,28 +44,23 @@ export default function Slider({ templates }) {
       },
     ],
   };
+  const theme = useTheme();
   return (
     <div>
       <SliderJs {...settings}>
         {templates.map((template) => (
           <div className=" p-3" key={template._id}>
-            <div className="">
-              <div className="">
-                <div className="">
-                  <div
-                    className="card p-3 card-width"
-                    style={{ backgroundColor: "#101010" }}
-                  >
-                    <div className="card-block">
-                      <h6 className="card-title text-center pb-3">
-                        {template.title}
-                      </h6>
-                      <p className=" p-y-1 " style={{ textAlign: "justify" }}>
-                        {template.body.slice(0, 200)}
-                      </p>
-                    </div>
-                  </div>
-                </div>
+            <div
+              className="card p-3 card-width"
+              style={{ backgroundColor: theme.palette.background.light }}
+            >
+              <div className="card-block">
+                <h6 className="card-title text-center pb-3">
+                  {template.title}
+                </h6>
+                <p className=" p-y-1 " style={{ textAlign: "justify" }}>
+                  {template.body.slice(0, 200)}
+                </p>
               </div>
             </div>
           </div>

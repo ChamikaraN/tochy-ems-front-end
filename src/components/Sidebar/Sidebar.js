@@ -1,43 +1,42 @@
-import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-
-import { withRouter } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 import s from "./Sidebar.module.scss";
 import LinksGroup from "./LinksGroup/LinksGroup.js";
 import { changeActiveSidebarItem } from "../../actions/navigation.js";
 import cn from "classnames";
+import { useTheme } from "@material-ui/core/styles";
 
 const Sidebar = (props) => {
-
-  const {
-    activeItem = '',
-    role,
-    ...restProps
-  } = props;
-
-
-  const [burgerSidebarOpen, setBurgerSidebarOpen] = useState(false)
+  const { activeItem = "", role, ...restProps } = props;
+  const theme = useTheme();
+  const [burgerSidebarOpen, setBurgerSidebarOpen] = useState(false);
 
   useEffect(() => {
     if (props.sidebarOpened) {
-      setBurgerSidebarOpen(true)
+      setBurgerSidebarOpen(true);
     } else {
       setTimeout(() => {
-        setBurgerSidebarOpen(false)
+        setBurgerSidebarOpen(false);
       }, 0);
     }
-  }, [props.sidebarOpened])
+  }, [props.sidebarOpened]);
 
   return (
-    <nav className={cn(s.root, {[s.sidebarOpen]: burgerSidebarOpen})} >
+    <nav
+      className={cn(s.root, { [s.sidebarOpen]: burgerSidebarOpen })}
+      style={{ backgroundColor: theme.palette.background.default }}
+    >
       <header className={s.logo}>
-      <i className={`eva eva-email ${s.headericon}`}></i>
+        <i className={`eva eva-email ${s.headericon}`}></i>
         <span className={s.title}>E.M.S</span>
       </header>
       <ul className={s.nav}>
         <LinksGroup
-          onActiveSidebarItemChange={activeItem => props.dispatch(changeActiveSidebarItem(activeItem))}
+          onActiveSidebarItemChange={(activeItem) =>
+            props.dispatch(changeActiveSidebarItem(activeItem))
+          }
           activeItem={props.activeItem}
           header="Dashboard"
           isHeader
@@ -46,37 +45,49 @@ const Sidebar = (props) => {
           index="dashboard"
           badge=""
         />
-    
-    
-          {role==='admin' &&   <LinksGroup
-          onActiveSidebarItemChange={activeItem => props.dispatch(changeActiveSidebarItem(activeItem))}
-          activeItem={props.activeItem}
-          header="View All Business"
-          isHeader
-          iconName={""}
-          link="/template/viewallbusiness"
-          index="viewallbusiness"
-        />}
-        {(role==='admin' || role==='business') && <LinksGroup
-          onActiveSidebarItemChange={activeItem => props.dispatch(changeActiveSidebarItem(activeItem))}
-          activeItem={props.activeItem}
-          header="Employees"
-          isHeader
-          iconName={""}
-          link="/template/employee"
-          index="employees"
-        />}
-        {(role==='business' || role==='user') && <LinksGroup
-          onActiveSidebarItemChange={activeItem => props.dispatch(changeActiveSidebarItem(activeItem))}
-          activeItem={props.activeItem}
-          header="Manage DNS"
-          isHeader
-          iconName={""}
-          link="/template/domain"
-          index="domain"
-        />}
+        {role === "admin" && (
+          <LinksGroup
+            onActiveSidebarItemChange={(activeItem) =>
+              props.dispatch(changeActiveSidebarItem(activeItem))
+            }
+            activeItem={props.activeItem}
+            header="View All Business"
+            isHeader
+            iconName={""}
+            link="/template/viewallbusiness"
+            index="viewallbusiness"
+          />
+        )}
+        {(role === "admin" || role === "business") && (
+          <LinksGroup
+            onActiveSidebarItemChange={(activeItem) =>
+              props.dispatch(changeActiveSidebarItem(activeItem))
+            }
+            activeItem={props.activeItem}
+            header="Employees"
+            isHeader
+            iconName={""}
+            link="/template/employee"
+            index="employees"
+          />
+        )}
+        {(role === "business" || role === "user") && (
+          <LinksGroup
+            onActiveSidebarItemChange={(activeItem) =>
+              props.dispatch(changeActiveSidebarItem(activeItem))
+            }
+            activeItem={props.activeItem}
+            header="Manage DNS"
+            isHeader
+            iconName={""}
+            link="/template/domain"
+            index="domain"
+          />
+        )}
         <LinksGroup
-          onActiveSidebarItemChange={activeItem => props.dispatch(changeActiveSidebarItem(activeItem))}
+          onActiveSidebarItemChange={(activeItem) =>
+            props.dispatch(changeActiveSidebarItem(activeItem))
+          }
           activeItem={props.activeItem}
           header=" Templates"
           isHeader
@@ -84,19 +95,23 @@ const Sidebar = (props) => {
           link="/template/viewallemailtemplates"
           index="allemailtemplates"
         />
-        
-          {role==='admin' && <LinksGroup
-          onActiveSidebarItemChange={activeItem => props.dispatch(changeActiveSidebarItem(activeItem))}
-          activeItem={props.activeItem}
-          header="Add templates"
-          isHeader
-          iconName={""}
-          link="/template/addemailtemplate"
-          index="addemailtemplates"
-        />}
- 
- <LinksGroup
-          onActiveSidebarItemChange={activeItem => props.dispatch(changeActiveSidebarItem(activeItem))}
+        {role === "admin" && (
+          <LinksGroup
+            onActiveSidebarItemChange={(activeItem) =>
+              props.dispatch(changeActiveSidebarItem(activeItem))
+            }
+            activeItem={props.activeItem}
+            header="Add templates"
+            isHeader
+            iconName={""}
+            link="/template/addemailtemplate"
+            index="addemailtemplates"
+          />
+        )}
+        <LinksGroup
+          onActiveSidebarItemChange={(activeItem) =>
+            props.dispatch(changeActiveSidebarItem(activeItem))
+          }
           activeItem={props.activeItem}
           header="Emails"
           isHeader
@@ -104,9 +119,10 @@ const Sidebar = (props) => {
           link="/template/viewemail"
           index="allemailtemplates"
         />
-     
-     <LinksGroup
-          onActiveSidebarItemChange={activeItem => props.dispatch(changeActiveSidebarItem(activeItem))}
+        <LinksGroup
+          onActiveSidebarItemChange={(activeItem) =>
+            props.dispatch(changeActiveSidebarItem(activeItem))
+          }
           activeItem={props.activeItem}
           header="Profile"
           isHeader
@@ -114,9 +130,10 @@ const Sidebar = (props) => {
           link="/template/viewprofile"
           index="allemailtemplates"
         />
-        
         <LinksGroup
-          onActiveSidebarItemChange={activeItem => props.dispatch(changeActiveSidebarItem(activeItem))}
+          onActiveSidebarItemChange={(activeItem) =>
+            props.dispatch(changeActiveSidebarItem(activeItem))
+          }
           activeItem={props.activeItem}
           header="Edit profile"
           isHeader
@@ -124,13 +141,10 @@ const Sidebar = (props) => {
           link="/template/editprofile"
           index="allemailtemplates"
         />
-      
-
       </ul>
-
     </nav>
   );
-}
+};
 
 Sidebar.propTypes = {
   sidebarOpened: PropTypes.bool,
@@ -139,7 +153,7 @@ Sidebar.propTypes = {
   location: PropTypes.shape({
     pathname: PropTypes.string,
   }).isRequired,
-}
+};
 
 function mapStateToProps(store) {
   return {

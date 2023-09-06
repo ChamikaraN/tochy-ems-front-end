@@ -20,8 +20,11 @@ import loginImage from "../../assets/registerImage.svg";
 import { registerUser } from "../../actions/register.js";
 import hasToken from "../../services/authService";
 import { toast } from "react-toastify";
+import { changeTheme } from "../../actions/theme.js";
+import { useTheme } from "@material-ui/core";
 
 const Register = (props) => {
+  const theme = useTheme();
   const [state, setState] = useState({
     name: "",
     businessname: "",
@@ -77,14 +80,21 @@ const Register = (props) => {
   }
 
   return (
-    <div className="auth-page" style={{ backgroundColor: "black" }}>
+    <div
+      className="auth-page"
+      style={{
+        backgroundColor: theme.palette.background.light,
+      }}
+    >
       <Container className="col-12">
         <Row className="d-flex align-items-center">
           <Col
             xs={12}
             lg={6}
             className="left-column"
-            style={{ backgroundColor: "black" }}
+            style={{
+              backgroundColor: theme.palette.background.light,
+            }}
           >
             <Widget className="widget-auth widget-p-lg">
               <div className="d-flex align-items-center justify-content-between py-3">
@@ -183,7 +193,7 @@ const Register = (props) => {
                         value="user"
                         checked={state.role === "user"}
                         onChange={(event) => changeCred(event)}
-                      />{" "}
+                      />
                       Individual Account
                     </Label>
                   </FormGroup>
@@ -219,8 +229,26 @@ const Register = (props) => {
             xs={0}
             lg={6}
             className="right-column"
-            style={{ backgroundColor: "black" }}
+            style={{
+              backgroundColor: theme.palette.background.light,
+            }}
           >
+            <div
+              style={{
+                position: "absolute",
+                top: "20px",
+                right: "10px",
+                transform: "translateX(-50%)",
+              }}
+              onClick={() => props.dispatch(changeTheme())}
+            >
+              <i
+                className={`eva eva-${
+                  props.theme === "dark" ? "sun" : "moon"
+                }-outline`}
+                style={{ color: props.theme === "dark" ? "#ffffff" : "#000" }}
+              ></i>
+            </div>
             <div>
               <img src={loginImage} alt="Error page" />
             </div>
@@ -241,6 +269,7 @@ function mapStateToProps(state) {
     isFetching: state.auth.isFetching,
     isAuthenticated: state.auth.isAuthenticated,
     errorMessage: state.auth.errorMessage,
+    theme: state.theme.selectedTheme,
   };
 }
 

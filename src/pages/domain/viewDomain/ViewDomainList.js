@@ -24,6 +24,7 @@ import {
   verifyDomain,
 } from "../../../actions/domain.js";
 import EditDomain from "../editDomain/EditDomain.js";
+import { useTheme } from "@material-ui/core";
 
 const ViewDomainList = function (props) {
   const [modalShow, setModalShow] = useState(false);
@@ -76,6 +77,8 @@ const ViewDomainList = function (props) {
     setFirstTableCurrentPage(index);
   };
 
+  const theme = useTheme();
+
   return (
     <div>
       <Row>
@@ -101,7 +104,7 @@ const ViewDomainList = function (props) {
                 </div>
                 <div className="widget-table-overflow p-4">
                   <Table
-                    className={`table table-borderless ${s.statesTable}`}
+                    className="table table-borderless table-hover"
                     responsive
                   >
                     <thead>
@@ -114,49 +117,43 @@ const ViewDomainList = function (props) {
                       </tr>
                     </thead>
                     <tbody>
-                      {domainData &&
-                        domainData
-                          .slice(
-                            firstTableCurrentPage * pageSize,
-                            (firstTableCurrentPage + 1) * pageSize
-                          )
-                          .map((item) => (
-                            <tr
-                              key={item._id}
-                              style={{ backgroundColor: "#101010" }}
-                            >
-                              <td className="d-flex align-items-center">
-                                <span className="ml-3">{item.domainName}</span>
-                              </td>
-                              <td>{item.txtrecord}</td>
-                              <td>
-                                {item.isVerified ? (
-                                  <span className="bg-primary rounded pl-1 pr-1 text-white">
-                                    Verified
-                                  </span>
-                                ) : (
-                                  <span className="bg-warning rounded pl-1 pr-1">
-                                    Not Verified
-                                  </span>
-                                )}
-                              </td>
+                      {domainData
+                        ?.slice(
+                          firstTableCurrentPage * pageSize,
+                          (firstTableCurrentPage + 1) * pageSize
+                        )
+                        .map((item) => (
+                          <tr key={item._id}>
+                            <td className="d-flex align-items-center">
+                              <span className="ml-3">{item.domainName}</span>
+                            </td>
+                            <td>{item.txtrecord}</td>
+                            <td>
+                              {item.isVerified ? (
+                                <span className="bg-primary rounded pl-1 pr-1 text-white">
+                                  Verified
+                                </span>
+                              ) : (
+                                <span className="bg-warning rounded pl-1 pr-1">
+                                  Not Verified
+                                </span>
+                              )}
+                            </td>
 
-                              <td className="d-flex actiondomainBtn">
-                                {/* <button type="button" className="btn btn-success" onClick={() =>handleEdit(item)}><i className="fa fa-edit actionicon"></i></button> */}
-
-                                {!item.isVerified && (
-                                  <button
-                                    type="button"
-                                    className="btn btn-primary"
-                                    onClick={() => handleVerifyDns(item._id)}
-                                  >
-                                    {" "}
-                                    Verify Now
-                                  </button>
-                                )}
-                              </td>
-                            </tr>
-                          ))}
+                            <td className="d-flex actiondomainBtn">
+                              {/* <button type="button" className="btn btn-success" onClick={() =>handleEdit(item)}><i className="fa fa-edit actionicon"></i></button> */}
+                              {!item.isVerified && (
+                                <button
+                                  type="button"
+                                  className="btn btn-primary"
+                                  onClick={() => handleVerifyDns(item._id)}
+                                >
+                                  Verify Now
+                                </button>
+                              )}
+                            </td>
+                          </tr>
+                        ))}
                     </tbody>
                   </Table>
                   {modalShow && (
@@ -182,7 +179,9 @@ const ViewDomainList = function (props) {
                         }
                         previous
                         href="#top"
-                        style={{ background: "#101010" }}
+                        style={{
+                          backgroundColor: theme.palette.background.light,
+                        }}
                       />
                     </PaginationItem>
                     {[...Array(firstTablePagesCount)].map((page, i) => (
@@ -209,7 +208,9 @@ const ViewDomainList = function (props) {
                         }
                         next
                         href="#top"
-                        style={{ background: "#101010" }}
+                        style={{
+                          backgroundColor: theme.palette.background.light,
+                        }}
                       />
                     </PaginationItem>
                   </Pagination>

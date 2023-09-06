@@ -16,6 +16,7 @@ import { fetchEmployee } from "../../actions/employee.js";
 import { fetchSentemail } from "../../actions/sentemail.js";
 import { Link } from "react-router-dom";
 import { fetchBusiness } from "../../actions/business.js";
+import { useTheme } from "@material-ui/core";
 
 const Dashboard = ({
   profileData,
@@ -33,7 +34,7 @@ const Dashboard = ({
     dispatch(fetchSentemail());
     dispatch(fetchBusiness());
   }, [dispatch]);
-
+  const theme = useTheme();
   return (
     <div>
       <Row>
@@ -210,7 +211,7 @@ const Dashboard = ({
         <Col className="mt-4 mt-lg-0" xs={12} lg={4}>
           <div
             className={`pb-4 ${s.widgetColor}`}
-            style={{ backgroundColor: "black" }}
+            style={{ backgroundColor: theme.palette.background.default }}
           >
             <div className="d-flex p-4">
               <img

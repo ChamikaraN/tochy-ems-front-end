@@ -21,6 +21,7 @@ import { connect } from "react-redux";
 import { fetchMyProfile } from "../../../actions/auth.js";
 import { fetchSentemail } from "../../../actions/sentemail.js";
 import { fetchEmployee } from "../../../actions/employee.js";
+import { useTheme } from "@material-ui/core";
 
 const EmailListTable = function (props) {
   const [modalShow, setModalShow] = useState(false);
@@ -31,6 +32,8 @@ const EmailListTable = function (props) {
     subject: "",
     body: "",
   });
+
+  const theme = useTheme();
 
   const [firstTableCurrentPage, setFirstTableCurrentPage] = useState(0);
   const [modalType, setModalType] = useState("edit");
@@ -106,7 +109,7 @@ const EmailListTable = function (props) {
                 </div>
                 <div className="widget-table-overflow p-4">
                   <Table
-                    className={`table-striped table-borderless table-hover ${s.statesTable}`}
+                    className="table table-borderless table-hover"
                     responsive
                   >
                     <thead>
@@ -119,40 +122,39 @@ const EmailListTable = function (props) {
                       </tr>
                     </thead>
                     <tbody>
-                      {totalemailsent &&
-                        totalemailsent
-                          .slice(
-                            firstTableCurrentPage * pageSize,
-                            (firstTableCurrentPage + 1) * pageSize
-                          )
-                          .map((item) => (
-                            <tr
-                              key={item._id}
-                              style={{ backgroundColor: "#101010" }}
-                            >
-                              <td className="d-flex align-items-center">
-                                <span className="ml-3">
-                                  {item.createdAt.slice(0, 10)}
+                      {totalemailsent
+                        ?.slice(
+                          firstTableCurrentPage * pageSize,
+                          (firstTableCurrentPage + 1) * pageSize
+                        )
+                        .map((item) => (
+                          <tr
+                            key={item._id}
+                            style={{ backgroundColor: "#101010" }}
+                          >
+                            <td className="d-flex align-items-center">
+                              <span className="ml-3">
+                                {item.createdAt.slice(0, 10)}
+                              </span>
+                            </td>
+                            {/* <td>{item.employeeid}</td> */}
+
+                            <td>{item.employeeid}</td>
+                            <td>{item.employeename}</td>
+
+                            <td>
+                              {item.seen ? (
+                                <span className="badge badge-success">
+                                  Opened
                                 </span>
-                              </td>
-                              {/* <td>{item.employeeid}</td> */}
-
-                              <td>{item.employeeid}</td>
-                              <td>{item.employeename}</td>
-
-                              <td>
-                                {item.seen ? (
-                                  <span className="badge badge-success">
-                                    Opened
-                                  </span>
-                                ) : (
-                                  <span className="badge badge-warning">
-                                    Not Opened
-                                  </span>
-                                )}
-                              </td>
-                            </tr>
-                          ))}
+                              ) : (
+                                <span className="badge badge-warning">
+                                  Not Opened
+                                </span>
+                              )}
+                            </td>
+                          </tr>
+                        ))}
                     </tbody>
                   </Table>
                   {modalShow && (
@@ -177,7 +179,9 @@ const EmailListTable = function (props) {
                         }
                         previous
                         href="#top"
-                        style={{ background: "#101010" }}
+                        style={{
+                          backgroundColor: theme.palette.background.light,
+                        }}
                       />
                     </PaginationItem>
                     {[...Array(firstTablePagesCount)].map((page, i) => (
@@ -204,7 +208,9 @@ const EmailListTable = function (props) {
                         }
                         next
                         href="#top"
-                        style={{ background: "#101010" }}
+                        style={{
+                          backgroundColor: theme.palette.background.light,
+                        }}
                       />
                     </PaginationItem>
                   </Pagination>

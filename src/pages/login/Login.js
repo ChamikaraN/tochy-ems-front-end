@@ -17,10 +17,14 @@ import { loginUser } from "../../actions/auth";
 import hasToken from "../../services/authService";
 
 import loginImage from "../../assets/loginImage.svg";
+import { useTheme } from "@material-ui/core";
+import { changeTheme } from "../../actions/theme";
 
 const Login = (props) => {
+  const theme = useTheme();
+
   const [state, setState] = useState({
-    email: "admin@phishstops.com",
+    email: "connect.chamikara@gmail.com",
     password: "+123456aA",
   });
 
@@ -50,17 +54,26 @@ const Login = (props) => {
   }
 
   return (
-    <div className="auth-page" style={{}}>
+    <div
+      className="auth-page"
+      style={{
+        backgroundColor: theme.palette.background.light,
+      }}
+    >
       <Container className="col-12">
         <Row
           className="d-flex align-items-center"
-          style={{ backgroundColor: "black" }}
+          style={{
+            backgroundColor: theme.palette.background.light,
+          }}
         >
           <Col
             xs={12}
             lg={6}
             className="left-column"
-            style={{ backgroundColor: "black" }}
+            style={{
+              backgroundColor: theme.palette.background.light,
+            }}
           >
             <Widget className="widget-auth widget-p-lg">
               <div className="d-flex align-items-center justify-content-between py-3">
@@ -131,8 +144,27 @@ const Login = (props) => {
             xs={0}
             lg={6}
             className="right-column"
-            style={{ backgroundColor: "black" }}
+            style={{
+              backgroundColor: theme.palette.background.light,
+            }}
           >
+            <div
+              style={{
+                position: "absolute",
+                top: "20px",
+                right: "10px",
+                transform: "translateX(-50%)",
+              }}
+              onClick={() => props.dispatch(changeTheme())}
+            >
+              <i
+                className={`eva eva-${
+                  props.theme === "dark" ? "sun" : "moon"
+                }-outline`}
+                style={{ color: props.theme === "dark" ? "#ffffff" : "#000" }}
+              ></i>
+            </div>
+
             <div>
               <img src={loginImage} alt="Error page" />
             </div>
@@ -153,6 +185,7 @@ function mapStateToProps(state) {
     isFetching: state.auth.isFetching,
     isAuthenticated: state.auth.isAuthenticated,
     errorMessage: state.auth.errorMessage,
+    theme: state.theme.selectedTheme,
   };
 }
 

@@ -32,7 +32,7 @@ export function registerUser(payload) {
         dispatch(registerError("Something was wrong. Try again"));
       }
     } catch (error) {
-      console.log(error);
+      error.response.status === 400 && toast.error(error.response.data.message);
     }
   };
 }

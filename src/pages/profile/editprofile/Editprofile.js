@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { fetchMyProfile, myProfileEdit } from "../../../actions/auth";
+import { useTheme } from "@material-ui/core";
 
 function Editprofile({ profileData, dispatch }) {
   useEffect(() => {
@@ -15,14 +16,20 @@ function Editprofile({ profileData, dispatch }) {
     const address = e.target.address.value;
     dispatch(myProfileEdit({ name, businessname, phone, address }));
   };
-
+  const theme = useTheme();
   return (
     <div>
       <div>
         <div className="row">
           <div className="col-lg-12">
-            <div className="card" style={{ backgroundColor: "#101010" }}>
-              <div className="card-body" style={{ backgroundColor: "#101010" }}>
+            <div
+              className="card mb-3 pt-2"
+              style={{ backgroundColor: theme.palette.background.default }}
+            >
+              <div
+                className="card-body"
+                style={{ backgroundColor: theme.palette.background.default }}
+              >
                 <div className="form-validation">
                   <form className="form-valide" onSubmit={handleSubmit}>
                     <div className="row">

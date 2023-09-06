@@ -27,10 +27,12 @@ import logoutIcon from "../../assets/navbarMenus/pfofileIcons/logoutOutlined.svg
 
 import s from "./Header.module.scss";
 import "animate.css";
+import { useTheme } from "@material-ui/core";
+import { changeTheme } from "../../actions/theme";
 
 const Header = (props) => {
   const [notificationsOpen, setNotificationsOpen] = useState(false);
-
+  const theme = useTheme();
   const { dispatch, profileData } = props;
 
   useEffect(() => {
@@ -56,7 +58,10 @@ const Header = (props) => {
   };
 
   return (
-    <Navbar className={`${s.root} d-print-none`}>
+    <Navbar
+      className={`${s.root} d-print-none`}
+      style={{ backgroundColor: theme.palette.background.light }}
+    >
       <div>
         <NavLink
           onClick={() => toggleSidebar()}
@@ -81,6 +86,17 @@ const Header = (props) => {
           id="basic-nav-dropdown"
           className="ml-3"
         >
+          <div
+            style={{ paddingRight: "20px", paddingTop: "10px" }}
+            onClick={() => props.dispatch(changeTheme())}
+          >
+            <i
+              className={`eva eva-${
+                props.theme === "dark" ? "sun" : "moon"
+              }-outline`}
+              style={{ color: props.theme === "dark" ? "#ffffff" : "#000" }}
+            ></i>
+          </div>
           <DropdownToggle nav caret className="navbar-dropdown-toggle">
             <span className={`${s.avatar} rounded-circle float-left mr-2`}>
               <img src={"https://via.placeholder.com/80x80"} alt="User" />
@@ -91,7 +107,10 @@ const Header = (props) => {
           </DropdownToggle>
           <DropdownMenu
             className="navbar-dropdown profile-dropdown"
-            style={{ width: "194px", backgroundColor: "black" }}
+            style={{
+              width: "194px",
+              backgroundColor: theme.palette.background.light,
+            }}
           >
             <Link to="/template/viewprofile">
               <DropdownItem className={s.dropdownProfileItem}>
@@ -132,6 +151,7 @@ function mapStateToProps(store) {
     sidebarOpened: store.navigation.sidebarOpened,
     sidebarStatic: store.navigation.sidebarStatic,
     profileData: store.myprofile.profileData,
+    theme: store.theme.selectedTheme,
   };
 }
 

@@ -27,6 +27,7 @@ import {
   removeTemplate,
   selectTemplate,
 } from "../../../actions/auth.js";
+import { useTheme } from "@material-ui/core";
 
 const Tables = function (props) {
   const [modalShow, setModalShow] = useState(false);
@@ -101,6 +102,8 @@ const Tables = function (props) {
     setFirstTableCurrentPage(index);
   };
 
+  const theme = useTheme();
+
   return (
     <div>
       <Row>
@@ -117,7 +120,7 @@ const Tables = function (props) {
                 </div>
                 <div className="widget-table-overflow p-4">
                   <Table
-                    className={`table-stripe table-borderless table-hover ${s.statesTable}`}
+                    className="table table-borderless table-hover"
                     responsive
                   >
                     <thead>
@@ -129,81 +132,74 @@ const Tables = function (props) {
                       </tr>
                     </thead>
                     <tbody>
-                      {templateData &&
-                        templateData
-                          .slice(
-                            firstTableCurrentPage * pageSize,
-                            (firstTableCurrentPage + 1) * pageSize
-                          )
-                          .map((item) => (
-                            <tr
-                              key={item._id}
-                              style={{ backgroundColor: "#101010" }}
-                            >
-                              <td className="d-flex align-items-center">
-                                <span className="ml-3">{item.title}</span>
-                              </td>
-                              <td>{item.body.slice(0, 19) + ".."}</td>
+                      {templateData
+                        ?.slice(
+                          firstTableCurrentPage * pageSize,
+                          (firstTableCurrentPage + 1) * pageSize
+                        )
+                        .map((item) => (
+                          <tr key={item._id}>
+                            <td className="d-flex align-items-center">
+                              <span className="ml-3">{item.title}</span>
+                            </td>
+                            <td>{item.body.slice(0, 19) + ".."}</td>
 
-                              <td className="d-flex actionBtn">
+                            <td className="d-flex actionBtn">
+                              <button
+                                type="button"
+                                className="btn btn-primary"
+                                onClick={() => handleView(item)}
+                              >
+                                <i className="fa fa-eye actionicon"></i>
+                              </button>
+                              {profileData.isAdmin && (
                                 <button
                                   type="button"
-                                  className="btn btn-primary"
-                                  onClick={() => handleView(item)}
+                                  className="btn btn-success"
+                                  onClick={() => handleEdit(item)}
                                 >
-                                  <i className="fa fa-eye actionicon"></i>
+                                  <i className="fa fa-edit actionicon"></i>
                                 </button>
-                                {profileData.isAdmin && (
-                                  <button
-                                    type="button"
-                                    className="btn btn-success"
-                                    onClick={() => handleEdit(item)}
-                                  >
-                                    <i className="fa fa-edit actionicon"></i>
-                                  </button>
-                                )}
-                                {profileData.isAdmin && (
+                              )}
+                              {profileData.isAdmin && (
+                                <button
+                                  type="button"
+                                  className="btn btn-danger"
+                                  onClick={() => handleDelete(item._id)}
+                                >
+                                  <i className="fa fa-solid fa-trash actionicon"></i>
+                                </button>
+                              )}
+
+                              {!profileData.isAdmin &&
+                                (selectedTemplate.some(
+                                  (stp) => stp.templateid === item._id
+                                ) ? (
                                   <button
                                     type="button"
                                     className="btn btn-danger"
-                                    onClick={() => handleDelete(item._id)}
+                                    title="Remove this fromyour template list"
+                                    onClick={() =>
+                                      handleRemoveTemplate(item._id)
+                                    }
                                   >
-                                    <i className="fa fa-solid fa-trash actionicon"></i>
+                                    <i className="fa fa-solid fa-minus actionicon"></i>
                                   </button>
-                                )}
-
-                                {!profileData.isAdmin &&
-                                  (selectedTemplate.some(
-                                    (stp) => stp.templateid === item._id
-                                  ) ? (
-                                    <button
-                                      type="button"
-                                      className="btn btn-danger"
-                                      title="Remove this fromyour template list"
-                                      onClick={() =>
-                                        handleRemoveTemplate(item._id)
-                                      }
-                                    >
-                                      <i className="fa fa-solid fa-minus actionicon"></i>
-                                    </button>
-                                  ) : (
-                                    <button
-                                      type="button"
-                                      className="btn btn-success"
-                                      title="Add this to your template list"
-                                      onClick={() =>
-                                        handleSelectTemplate(
-                                          item._id,
-                                          item.title
-                                        )
-                                      }
-                                    >
-                                      <i className="fa fa-solid fa-plus actionicon"></i>
-                                    </button>
-                                  ))}
-                              </td>
-                            </tr>
-                          ))}
+                                ) : (
+                                  <button
+                                    type="button"
+                                    className="btn btn-success"
+                                    title="Add this to your template list"
+                                    onClick={() =>
+                                      handleSelectTemplate(item._id, item.title)
+                                    }
+                                  >
+                                    <i className="fa fa-solid fa-plus actionicon"></i>
+                                  </button>
+                                ))}
+                            </td>
+                          </tr>
+                        ))}
                     </tbody>
                   </Table>
                   {modalShow && (
@@ -228,7 +224,9 @@ const Tables = function (props) {
                         }
                         previous
                         href="#top"
-                        style={{ background: "#101010" }}
+                        style={{
+                          backgroundColor: theme.palette.background.light,
+                        }}
                       />
                     </PaginationItem>
                     {[...Array(firstTablePagesCount)].map((page, i) => (
@@ -255,7 +253,9 @@ const Tables = function (props) {
                         }
                         next
                         href="#top"
-                        style={{ background: "#101010" }}
+                        style={{
+                          backgroundColor: theme.palette.background.light,
+                        }}
                       />
                     </PaginationItem>
                   </Pagination>
