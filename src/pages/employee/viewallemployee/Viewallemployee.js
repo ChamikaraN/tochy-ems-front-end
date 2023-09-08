@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-
 import {
   Col,
   Row,
@@ -10,11 +9,8 @@ import {
   PaginationLink,
 } from "reactstrap";
 import Widget from "../../../components/Widget/Widget.js";
-
 import "../../business/viewallbusiness/Viewallbusiness.css";
-
 import s from "../../tables/Tables.module.scss";
-
 import { connect } from "react-redux";
 import Editemployee from "../editemployee/Editemployee.js";
 import {
@@ -22,13 +18,17 @@ import {
   deleteEmployee,
   editEmployee,
   fetchEmployee,
+  importEmployeesCsv,
 } from "../../../actions/employee.js";
 import { toast } from "react-toastify";
 import { fetchDomain } from "../../../actions/domain.js";
 import { useTheme } from "@material-ui/core";
+import ImportEmployee from "../importEmployee/ImportEmployee.js";
 
 const Tables = function (props) {
   const [modalShow, setModalShow] = useState(false);
+  const [importEmpShow, setImportEmpShow] = useState(false);
+  const [csv, setCsv] = useState(null);
   const [changedField, setChangedField] = useState({
     id: "",
     name: "",
@@ -36,13 +36,9 @@ const Tables = function (props) {
     phone: "",
   });
 
-  let mailopened = 6;
-  let mailsent = 14;
   const [firstTableCurrentPage, setFirstTableCurrentPage] = useState(0);
   const [modalType, setModalType] = useState("edit");
-
   const { domainData } = props;
-
   const pageSize = 10;
   const { employeeData } = props.employeeDetails;
   const { dispatch, profileDetails } = props;
@@ -64,6 +60,7 @@ const Tables = function (props) {
     }));
     setModalShow(true);
   };
+
   const handleView = (item) => {
     setModalType("view");
     setChangedField((prev) => ({
@@ -75,7 +72,10 @@ const Tables = function (props) {
     }));
     setModalShow(true);
   };
+
   const toggleModal = () => setModalShow(!modalShow);
+
+  const closeImport = () => setImportEmpShow(!importEmpShow);
 
   const editSubmit = () => {
     let domain = changedField.email.split("@")[1];
@@ -90,6 +90,7 @@ const Tables = function (props) {
       toast.error("You can only add verified DNS email for employee.");
     }
   };
+
   const addSubmit = () => {
     if (!changedField.email || !changedField.name) {
       toast.error("Please fill all fields");
@@ -111,14 +112,77 @@ const Tables = function (props) {
     }
   };
 
+  const importEmployees = () => {
+    if (!csv) {
+      toast.error("Please Select CSV File");
+      return;
+    }
+
+    // Read the contents of the selected CSV file
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const fileContents = event.target.result;
+
+      // Split the file contents into lines
+      const lines = fileContents.split("\n");
+
+      // Check if the first line (header) matches the expected headers
+      const header = lines[0].trim();
+      if (header !== "name,phone,email") {
+        toast.error("Invalid CSV header. Expected: name, phone, email");
+        return;
+      }
+
+      // Process the CSV data
+      const domains = [];
+      let matchingDomainFound = true; // Flag to track if a matching domain was found
+
+      for (let i = 1; i < lines.length; i++) {
+        const line = lines[i].trim();
+        if (line) {
+          const columns = line.split(",");
+          const email = columns[2]; // Assuming email is the third column (index 2)
+
+          // Check if the email domain is in the domainData array and is verified
+          const matchingDomain = domainData.find(
+            (domain) => domain.isVerified && email.includes(domain.domainName)
+          );
+
+          if (matchingDomain) {
+            domains.push(matchingDomain.domainName);
+          } else {
+            matchingDomainFound = false; // Set the flag to false
+            break; // Stop the loop if a matching domain is not found
+          }
+        }
+      }
+
+      if (matchingDomainFound) {
+        props.dispatch(importEmployeesCsv(csv));
+      } else {
+        toast.error(
+          "Not verified domain found! Please verify the domain first!"
+        );
+      }
+    };
+
+    reader.readAsText(csv);
+  };
+
   const handleDelete = (id) => {
     props.dispatch(deleteEmployee(id));
   };
+
   const handleAdd = () => {
     setChangedField({ id: "", name: "", email: "", phone: "" });
     setModalShow(true);
     setModalType("add");
     // props.dispatch(deleteEmployee(id))
+  };
+
+  const handleImport = () => {
+    setCsv(null);
+    setImportEmpShow(true);
   };
 
   const setFirstTablePage = (e, index) => {
@@ -139,6 +203,14 @@ const Tables = function (props) {
                   <div className="headline-2">Employee List</div>
                   {profileDetails && profileDetails.role !== "admin" && (
                     <div>
+                      <button
+                        type="button"
+                        className="btn btn-primary p-1 pr-2 pl-2 mr-2"
+                        onClick={handleImport}
+                      >
+                        <i className="fa fa-download actionicon"></i> Import
+                        From CSV
+                      </button>
                       <button
                         type="button"
                         className="btn btn-success p-1 pr-2 pl-2"
@@ -255,6 +327,13 @@ const Tables = function (props) {
                       addSubmit={addSubmit}
                     />
                   )}
+                  <ImportEmployee
+                    show={importEmpShow}
+                    setCsv={setCsv}
+                    csv={csv}
+                    closeImport={closeImport}
+                    importEmployees={importEmployees}
+                  />
 
                   <Pagination
                     className="pagination-borderless mt-2"

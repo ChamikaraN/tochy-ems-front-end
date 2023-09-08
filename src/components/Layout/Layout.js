@@ -121,7 +121,6 @@ const Layout = (props) => {
 Layout.propTypes = {
   sidebarOpened: PropTypes.bool,
   dispatch: PropTypes.func.isRequired,
-  toggleTheme: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(store) {
