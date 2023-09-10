@@ -17,6 +17,7 @@ import s from "../../tables/Tables.module.scss";
 
 import Editemailtemplate from "../editemailtemplate/Editemailtemplate.js";
 import {
+  addTemplate,
   deleteTemplate,
   editTemplate,
   fetchTemplate,
@@ -37,6 +38,7 @@ const Tables = function (props) {
     emailfrom: "",
     subject: "",
     body: "",
+    publicAccess:false,
   });
 
   const [firstTableCurrentPage, setFirstTableCurrentPage] = useState(0);
@@ -55,6 +57,21 @@ const Tables = function (props) {
     dispatch(fetchMyProfile());
   }, [dispatch]);
 
+  const handleAdd = () => {
+    setModalType("add");
+    setChangedField((prev) => ({
+      ...prev,
+      id: "",
+      title: "",
+      emailfrom: "",
+      subject: "",
+      body: "",
+      publicAccess:false,
+    }));
+    setModalShow(true);
+  };
+
+
   const handleEdit = (item) => {
     setModalType("edit");
     setChangedField((prev) => ({
@@ -64,6 +81,7 @@ const Tables = function (props) {
       emailfrom: item.emailfrom,
       subject: item.subject,
       body: item.body,
+      publicAccess:item.publicAccess,
     }));
     setModalShow(true);
   };
@@ -76,10 +94,16 @@ const Tables = function (props) {
       emailfrom: item.emailfrom,
       subject: item.subject,
       body: item.body,
+      publicAccess:item.publicAccess,
     }));
     setModalShow(true);
   };
   const toggleModal = () => setModalShow(!modalShow);
+
+  const addSubmit = () => {
+    props.dispatch(addTemplate(changedField));
+    setModalShow(false);
+  };
 
   const editSubmit = () => {
     props.dispatch(editTemplate(changedField));
@@ -117,6 +141,18 @@ const Tables = function (props) {
                       ? "Email Template List"
                       : "Select your email template"}
                   </div>
+                  {(profileData?.role === "admin" ||
+                    profileData?.role === "business") && (
+                    <div>
+                      <button
+                        type="button"
+                        className="btn btn-success p-1 pr-2 pl-2"
+                        onClick={handleAdd}
+                      >
+                        <i className="fa fa-plus actionicon"></i> Add Template
+                      </button>
+                    </div>
+                  )}
                 </div>
                 <div className="widget-table-overflow p-4">
                   <Table
@@ -209,7 +245,8 @@ const Tables = function (props) {
                       setChangedField={setChangedField}
                       modalType={modalType}
                       toggle={toggleModal}
-                      editsubmit={editSubmit}
+                      editSubmit={editSubmit}
+                      addSubmit={addSubmit}
                     />
                   )}
 
