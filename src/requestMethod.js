@@ -1,6 +1,6 @@
 import axios from "axios";
-// const BASE_URL = "https://api.phishstops.com/";
-const BASE_URL = "http://localhost:3001/";
+const BASE_URL = "https://api.phishstops.com/";
+// const BASE_URL = "http://localhost:3001/";
 let token;
 let TOKEN = "";
 export const loadToken = () => {

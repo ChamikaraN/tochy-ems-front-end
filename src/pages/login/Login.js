@@ -24,8 +24,8 @@ const Login = (props) => {
   const theme = useTheme();
 
   const [state, setState] = useState({
-    email: "connect.chamikara@gmail.com",
-    password: "+123456aA",
+    email: "",
+    password: "",
   });
 
   const doLogin = (e) => {
