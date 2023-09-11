@@ -1,5 +1,5 @@
 import { toast } from 'react-toastify';
-import { publicRequest } from '../requestMethod';
+import { publicRequest, userRequest } from '../requestMethod';
 
 export const FETCH_TEMPLATE_REQUEST = 'FETCH_TEMPLATE_REQUEST';
 export const FETCH_TEMPLATE_SUCCESS = 'FETCH_TEMPLATE_SUCCESS';
@@ -50,7 +50,7 @@ export function editTemplate(changedField) {
 export function addTemplate(field) {
 
   return async(dispatch) => {
-   const {data}= await publicRequest.post(`/api/template/add`, field)
+   const {data}= await userRequest.post(`/api/template/add`, field)
   
    if (data) {
     
