@@ -158,8 +158,12 @@ const Tables = function (props) {
       }
 
       if (matchingDomainFound) {
+        setCsv(null);
+        setImportEmpShow(false);
         props.dispatch(importEmployeesCsv(csv));
       } else {
+        setCsv(null);
+        setImportEmpShow(false);
         toast.error(
           "Not verified domain found! Please verify the domain first!"
         );

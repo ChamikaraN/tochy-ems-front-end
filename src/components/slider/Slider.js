@@ -9,7 +9,7 @@ import SliderJs from "react-slick";
 import { useTheme } from "@material-ui/core";
 
 export default function Slider({ templates }) {
-  var settings = {
+  let settings = {
     dots: true,
     infinite: true,
     slidesToShow: 3,
@@ -48,7 +48,7 @@ export default function Slider({ templates }) {
   return (
     <div>
       <SliderJs {...settings}>
-        {templates.map((template) => (
+        {templates?.map((template) => (
           <div className=" p-3" key={template._id}>
             <div
               className="card p-3 card-width"

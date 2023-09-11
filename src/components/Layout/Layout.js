@@ -85,6 +85,7 @@ const Layout = (props) => {
               exact
               component={Viewallemployee}
             />
+
             <Route path="/template/domain" exact component={ViewDomainList} />
 
             <Route
